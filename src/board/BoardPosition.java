@@ -1,16 +1,17 @@
 package board;
 
+import java.util.Set;
+import java.util.HashSet;
+
 public class BoardPosition {
 	public StartSpaceMarker start;
 	public TargetChip targetChip;
 	public Position pos;
+	
 	public boolean center;
 	public char id;
 	
-	public Wall wallRight;
-	public Wall wallLeft;
-	public Wall wallUp;
-	public Wall wallDown;
+	public Set<Wall> walls;
 	
 	BoardPosition(Position pos, StartSpaceMarker start) {
 		this.pos = pos;
@@ -37,6 +38,8 @@ public class BoardPosition {
 		this.center = false;
 		
 		this.id = '.';
+		
+		walls = new HashSet<Wall>();
 	}
 	
 	public void setCenter() {
@@ -73,35 +76,36 @@ public class BoardPosition {
 		return id;
 	}
 	
-	public Wall getWallRight() {
-		return this.wallRight;
+	public Set<Wall> getWalls() {
+		return this.walls;
 	}
 	
-	public void setWallRight(Wall wall) {
-		this.wallRight = wall;
+	public void setWalls(Set<Wall> wall) {
+		this.walls = wall;
 	}
 	
-	public Wall getWallLeft() {
-		return this.wallLeft;
+	public void addWall(Wall wall) {
+		walls.add(wall);
 	}
 	
-	public void setWallLeft(Wall wall) {
-		this.wallLeft = wall;
+	public void setPosition(Position pos) {
+		this.pos = pos;
 	}
 	
-	public Wall getWallDown() {
-		return this.wallDown;
+	public Position getPosition() {
+		return pos;
 	}
 	
-	public void setWallDown(Wall wall) {
-		this.wallDown = wall;
-	}
-	
-	public Wall getWallUp() {
-		return this.wallUp;
-	}
-	
-	public void setWallUp(Wall wall) {
-		this.wallUp = wall;
+	public void printWalls() {
+		System.out.println("Printing walls");
+		
+		for(Wall wall : walls) {
+			System.out.print("Wall found with dir: ");
+			
+			if(wall.getOrientation().equals(Wall.Orientation.RIGHT)) System.out.println("RIGHT");
+			else if(wall.getOrientation().equals(Wall.Orientation.LEFT)) System.out.println("LEFT");
+			else if(wall.getOrientation().equals(Wall.Orientation.DOWN)) System.out.println("DOWN");
+			else if(wall.getOrientation().equals(Wall.Orientation.UP)) System.out.println("UP");
+		}
 	}
 }

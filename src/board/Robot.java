@@ -1,6 +1,4 @@
-package pieces;
-
-import board.*;
+package board;
 
 public class Robot {
 	public char color;
