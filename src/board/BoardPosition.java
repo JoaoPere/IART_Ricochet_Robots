@@ -7,6 +7,7 @@ public class BoardPosition {
 	public StartSpaceMarker start;
 	public TargetChip targetChip;
 	public Position pos;
+	public Robot robot;
 	
 	public boolean center;
 	public char id;
@@ -18,6 +19,7 @@ public class BoardPosition {
 		this.start = start;
 		this.targetChip = null;
 		this.center = false;
+		this.robot = null;
 		
 		this.id = start.getColor();
 	}
@@ -27,6 +29,7 @@ public class BoardPosition {
 		this.targetChip = targetChip;
 		this.start = null;
 		this.center = false;
+		this.robot = null;
 		
 		this.id = targetChip.getColor();
 	}
@@ -36,6 +39,7 @@ public class BoardPosition {
 		this.start = null;
 		this.targetChip = null;
 		this.center = false;
+		this.robot = null;
 		
 		this.id = '.';
 		
@@ -63,7 +67,7 @@ public class BoardPosition {
 	}
 	
 	public void setStartSpaceMarker(StartSpaceMarker start) {
-		this.start = start; 
+		this.start = start;
 		
 		this.id = start.getColor();
 	}
@@ -107,5 +111,18 @@ public class BoardPosition {
 			else if(wall.getOrientation().equals(Wall.Orientation.DOWN)) System.out.println("DOWN");
 			else if(wall.getOrientation().equals(Wall.Orientation.UP)) System.out.println("UP");
 		}
+	}
+	
+	public void setRobot(Robot robot) {
+		this.robot = robot;
+	}
+	
+	public Robot getRobot() {
+		return this.robot;
+	}
+	
+	public boolean hasRobot() {
+		if(this.robot == null) return false;
+		else return true;
 	}
 }

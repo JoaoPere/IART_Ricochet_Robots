@@ -5,40 +5,11 @@ import java.util.*;
 import board.*;
 
 public class AStar { 
-	Board board;
 	PriorityQueue<Cell> open;
     boolean closed[][];
+    Board board;
     
-    int startI, startJ;
-    int endI, endJ;
-    Cell [][] grid = new Cell[16][16];
     int pre[][] = new int[16][16];
-            
-    public void setBlocked(int i, int j){
-        grid[i][j] = null;
-    }
-    
-    public void setStartCell(int i, int j){
-        startI = i;
-        startJ = j;
-    }
-    
-    public void setEndCell(int i, int j){
-        endI = i;
-        endJ = j; 
-    }
-    
-    void checkAndUpdateCost(Cell current, Cell t, int cost){
-        if(t == null || closed[t.i][t.j])return;
-        int t_final_cost = t.heuristicCost+cost;
-        
-        boolean inOpen = open.contains(t);
-        if(!inOpen || t_final_cost<t.finalCost){
-            t.finalCost = t_final_cost;
-            t.parent = current;
-            if(!inOpen)open.add(t);
-        }
-    }
     
     public int numberOfZerosInArray(){
     	int res = 0;
@@ -66,8 +37,7 @@ public class AStar {
     		for(int l=0; l<16; l++) {
     			for(int p=0; p<16; p++) {
     				if(pre[l][p] == num) {
-    					tempX = l;
-    					tempY = p;
+    					tempX = l; tempY = p;
     					
     					for(int i=p; i<16; i++) {
     		        		for(Wall wall : board.board_pos[tempX][tempY].getWalls()) 
@@ -81,8 +51,7 @@ public class AStar {
     		        			break;
     		        	}
     		    		
-    		        	tempX = l;
-    		        	tempY = p;
+    		        	tempX = l; tempY = p;
     		        	found = false;
     		        	
     		        	for(int i=p; i>=0; i--) {	    		
@@ -100,8 +69,7 @@ public class AStar {
     		        	}
     		        	
     		        	
-    		        	tempX = l;
-    		        	tempY = p;
+    		        	tempX = l; tempY = p;
     		        	found = false;
     		        	
     		        	for(int i=l; i<16; i++) {
@@ -117,8 +85,7 @@ public class AStar {
     		        			break;
     		        	}
     		        	
-    		        	tempX = l;
-    		        	tempY = p;
+    		        	tempX = l; tempY = p;
     		        	found = false;
     		        	
     		        	for(int i=l; i>=0; i--) {	    		
@@ -135,11 +102,12 @@ public class AStar {
     		        			break;
     		        	}
     		        	
-    		        	tempX = l;
-    		        	tempY = p;
+    		        	tempX = l; tempY = p;
     		        	found = false;
     		        	
     		        	printPre();
+    		        	
+    		        	System.out.println();
     				}
     			}
     		}
@@ -175,60 +143,5 @@ public class AStar {
     	pre[x][y] = 0;
     	
     	precompute_costs(end);
-    	
-        /*open.add(grid[startI][startJ]);
-        
-        Cell current;
-        
-        while(true){ 
-            current = open.poll();
-            if(current==null)break;
-            closed[current.i][current.j]=true; 
-
-            if(current.equals(grid[endI][endJ])){
-                return; 
-            } 
-
-            Cell t;  
-            if(current.i-1>=0){
-                t = grid[current.i-1][current.j];
-                checkAndUpdateCost(current, t, current.finalCost+V_H_COST); 
-
-                if(current.j-1>=0){                      
-                    t = grid[current.i-1][current.j-1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST); 
-                }
-
-                if(current.j+1<grid[0].length){
-                    t = grid[current.i-1][current.j+1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST); 
-                }
-            } 
-
-            if(current.j-1>=0){
-                t = grid[current.i][current.j-1];
-                checkAndUpdateCost(current, t, current.finalCost+V_H_COST); 
-            }
-
-            if(current.j+1<grid[0].length){
-                t = grid[current.i][current.j+1];
-                checkAndUpdateCost(current, t, current.finalCost+V_H_COST); 
-            }
-
-            if(current.i+1<grid.length){
-                t = grid[current.i+1][current.j];
-                checkAndUpdateCost(current, t, current.finalCost+V_H_COST); 
-
-                if(current.j-1>=0){
-                    t = grid[current.i+1][current.j-1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST); 
-                }
-                
-                if(current.j+1<grid[0].length){
-                   t = grid[current.i+1][current.j+1];
-                    checkAndUpdateCost(current, t, current.finalCost+DIAGONAL_COST); 
-                }  
-            }
-        }*/
     }
 }

@@ -2,6 +2,8 @@ package board;
 
 import java.util.Random;
 
+import board.Wall.Orientation;
+
 public class Board {
 	public Robot [] robots;
 	public BoardPosition[][] board_pos;
@@ -39,6 +41,51 @@ public class Board {
 		generateBoard(0);
 	}
 	
+ 	public void moveRobot(BoardPosition start, Robot robot, Orientation ori) {
+ 		int tempX, tempY;
+ 		
+ 		tempX = start.getPosition().getX();
+ 		tempY = start.getPosition().getY();
+ 		
+ 		boolean placed = false;
+ 		
+ 		while(!placed) {
+ 			System.out.println("POS: " + tempX + "," + tempY);
+ 			
+ 	 		for(Wall wall : board_pos[tempX][tempY].getWalls()) {
+ 	 			if(wall.getOrientation().equals(ori)) {
+ 	 				System.out.println("Placed");
+ 	 				
+ 	 				board_pos[tempX][tempY].setRobot(robot);
+ 	 				board_pos[start.getPosition().getX()][start.getPosition().getY()].setRobot(null);
+ 	 				placed = true;
+ 	 				
+ 	 				break;
+ 	 			}	 			
+ 	 		}
+ 			if((ori.equals(Wall.Orientation.RIGHT) && board_pos[tempY++][tempX].hasRobot()) || 
+ 				ori.equals(Wall.Orientation.LEFT) && board_pos[tempY--][tempX].hasRobot() ||
+ 				ori.equals(Wall.Orientation.DOWN) && board_pos[tempY][tempX++].hasRobot() ||
+ 				ori.equals(Wall.Orientation.UP) && board_pos[tempY][tempX--].hasRobot()) {
+ 				
+ 				System.out.println("Placed");
+ 				
+ 				board_pos[tempX][tempY].setRobot(robot);
+ 				board_pos[start.getPosition().getX()][start.getPosition().getY()].setRobot(null);
+ 				placed = true;
+ 				
+ 				break;
+ 			}	 	
+ 	 		
+ 			if(placed == false) {
+ 				if(ori.equals(Wall.Orientation.RIGHT)) tempY++;
+ 				else if(ori.equals(Wall.Orientation.LEFT)) tempY--;
+ 				else if(ori.equals(Wall.Orientation.DOWN)) tempX++;
+ 				else if(ori.equals(Wall.Orientation.LEFT)) tempX--;
+ 			}
+ 		}
+ 	}
+	
 	public void generateBoard(int num) {
 		TargetChip blueChip = new TargetChip('b');
 		TargetChip greenChip = new TargetChip('g');
@@ -50,6 +97,11 @@ public class Board {
 		
 		switch(num) {
 		case 0:
+			board_pos[0][0].setRobot(new Robot('4'));
+			board_pos[2][1].setRobot(new Robot('2'));
+			board_pos[4][7].setRobot(new Robot('3'));
+			board_pos[5][12].setRobot(new Robot('1'));
+			
 			board_pos[0][0].setStartSpaceMarker(new StartSpaceMarker('R'));
 			board_pos[2][1].setStartSpaceMarker(new StartSpaceMarker('B'));
 			board_pos[4][7].setStartSpaceMarker(new StartSpaceMarker('Y'));
@@ -224,73 +276,14 @@ public class Board {
 			board_pos[8][8].addWall(right);
 			board_pos[8][9].addWall(left);
 			
-			board_pos[0][0].addWall(left);
-			board_pos[1][0].addWall(left);
-			board_pos[2][0].addWall(left);
-			board_pos[3][0].addWall(left);
-			board_pos[4][0].addWall(left);
-			board_pos[5][0].addWall(left);
-			board_pos[6][0].addWall(left);
-			board_pos[7][0].addWall(left);
-			board_pos[8][0].addWall(left);
-			board_pos[9][0].addWall(left);
-			board_pos[10][0].addWall(left);
-			board_pos[11][0].addWall(left);
-			board_pos[12][0].addWall(left);
-			board_pos[13][0].addWall(left);
-			board_pos[14][0].addWall(left);
-			board_pos[15][0].addWall(left);
-			
-			board_pos[0][15].addWall(right);
-			board_pos[1][15].addWall(right);
-			board_pos[2][15].addWall(right);
-			board_pos[3][15].addWall(right);
-			board_pos[4][15].addWall(right);
-			board_pos[5][15].addWall(right);
-			board_pos[6][15].addWall(right);
-			board_pos[7][15].addWall(right);
-			board_pos[8][15].addWall(right);
-			board_pos[9][15].addWall(right);
-			board_pos[10][15].addWall(right);
-			board_pos[11][15].addWall(right);
-			board_pos[12][15].addWall(right);
-			board_pos[13][15].addWall(right);
-			board_pos[14][15].addWall(right);
-			board_pos[15][15].addWall(right);
-			
-			board_pos[0][0].addWall(up);
-			board_pos[0][1].addWall(up);
-			board_pos[0][2].addWall(up);
-			board_pos[0][3].addWall(up);
-			board_pos[0][4].addWall(up);
-			board_pos[0][5].addWall(up);
-			board_pos[0][6].addWall(up);
-			board_pos[0][7].addWall(up);
-			board_pos[0][8].addWall(up);
-			board_pos[0][9].addWall(up);
-			board_pos[0][10].addWall(up);
-			board_pos[0][11].addWall(up);
-			board_pos[0][12].addWall(up);
-			board_pos[0][13].addWall(up);
-			board_pos[0][14].addWall(up);
-			board_pos[0][15].addWall(up);
-			
-			board_pos[15][0].addWall(down);
-			board_pos[15][1].addWall(down);
-			board_pos[15][2].addWall(down);
-			board_pos[15][3].addWall(down);
-			board_pos[15][4].addWall(down);
-			board_pos[15][5].addWall(down);
-			board_pos[15][6].addWall(down);
-			board_pos[15][7].addWall(down);
-			board_pos[15][8].addWall(down);
-			board_pos[15][9].addWall(down);
-			board_pos[15][10].addWall(down);
-			board_pos[15][11].addWall(down);
-			board_pos[15][12].addWall(down);
-			board_pos[15][13].addWall(down);
-			board_pos[15][14].addWall(down);
-			board_pos[15][15].addWall(down);
+			for(int i = 0; i<16; i++) {
+				for (int j=0; j<16; j++) {
+					if(i == 0) board_pos[i][j].addWall(up);
+					if(i==15) board_pos[i][j].addWall(down);
+					if(j==0) board_pos[i][j].addWall(left);
+					if(j==15) board_pos[i][j].addWall(right);
+				}
+			}
 		}	
 	}
 	
@@ -317,5 +310,14 @@ public class Board {
 			aux = "";
 		}
 		return res;
+	}
+	
+	public void printRobotPositions() {
+		for(int i=0; i<board_pos.length; i++) {
+			for(int j=0; j<board_pos[i].length; j++) {
+				if(board_pos[i][j].getRobot() != null) 
+					System.out.println("Robot with color " + board_pos[i][j].getRobot().getColor() + " on position " + board_pos[i][j].getPosition().getX() +"," + board_pos[i][j].getPosition().getY());
+			}
+		}
 	}
 }
