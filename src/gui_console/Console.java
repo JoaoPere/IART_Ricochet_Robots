@@ -1,4 +1,4 @@
-package gui;
+package gui_console;
 
 import board.*;
 import solver.*;
